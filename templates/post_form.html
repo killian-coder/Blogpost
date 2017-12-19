@@ -8,16 +8,11 @@
     <title>Document</title>
 </head>
 <body>
-<h1>{{ title }} is working</h1>
+<h1>Form</h1>
+<form method="POST" action="">{% csrf_token %}
+    {{ form.as_p }}
+<input type="submit" value="Create Post" />
+</form>
 
-{% for obj in object_list %}
-    {% url "posts:detail" id=obj.id  %}
-    <a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a><br>
-{{ obj.content }}<br>
-{{ obj.timestamp }}<br>
-{{ obj.updated }}<br>
-{{ obj.id }}<br>
-
-{% endfor %}
 </body>
 </html>
