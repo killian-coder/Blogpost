@@ -1,5 +1,6 @@
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 from .forms import PostForms
 from . models import Post
 
@@ -12,8 +13,10 @@ def post_create(request):
         print(form.cleaned_data.get("title"))
         instance.save()
         #message success
+        messages.success(request,"Post successsfuly Created")
         return HttpResponseRedirect(instance.get_absolute_url())
-
+    else:
+        messages.error(request,"Not Post successsfuly Created")
 
     # if request.method == 'POST':
     #     print(request.POST.get("title",))
@@ -39,7 +42,7 @@ def post_list(request): #list_items
         "object_list": queryset,
         "title":"List"
     }
-    return render(request, "index.html", context)
+    return render(request, "post_list.html", context)
 
 def post_update(request,id =None):
     instance = get_object_or_404(Post, id=id)
@@ -48,6 +51,7 @@ def post_update(request,id =None):
         instance = form.save(commit=False)
         instance.save()
         #message success
+        messages.success(request, "Post updated")
         return HttpResponseRedirect(instance.get_absolute_url())
     context = {
         "title": instance.title,
@@ -57,5 +61,8 @@ def post_update(request,id =None):
     return render(request, "post_form.html", context)
 
 
-def post_delete(request):
-    return HttpResponse("<h1>hey delete me </h1>")
+def post_delete(request, id=None):
+    instance = get_object_or_404(Post, id=id)
+    instance.delete()
+    messages.success(request, "successfuly daleted")
+    return redirect("posts:list")
