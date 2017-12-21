@@ -44,12 +44,12 @@ def post_list(request): #list_items
 
     page = request.GET.get('page')
     try:
-        contacts = paginator.page(page)
+        queryset = paginator.page(page)
     except PageNotAnInteger:
-        contacts = paginator.page(1)
+        queryset = paginator.page(1)
         #if page not interger
     except EmptyPage:
-        contacts = paginator.page(paginator.num_pages)
+        queryset = paginator.page(paginator.num_pages)
     context ={
         "object_list": queryset,
         "title":"List"
