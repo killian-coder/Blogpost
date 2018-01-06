@@ -9,7 +9,7 @@ from . models import Post
 # Create your views here.
 
 def post_create(request):
-    form = PostForms(request.POST or None)
+    form = PostForms(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
         print(form.cleaned_data.get("title"))
@@ -39,10 +39,10 @@ def post_detail(request,id=None): #retrive
     return render(request, "post_details.html", context)
 
 def post_list(request): #list_items
-    queryset = Post.objects.all().order_by("-timestamp")
-    paginator = Paginator(queryset, 25)  # Show 25 contacts per page
-
-    page = request.GET.get('page')
+    queryset_list= Post.objects.all().order_by("-timestamp")
+    paginator = Paginator(queryset_list,10)  # Show 25 contacts per page
+    page_request_var = "page"
+    page = request.GET.get(page_request_var)
     try:
         queryset = paginator.page(page)
     except PageNotAnInteger:
@@ -52,18 +52,15 @@ def post_list(request): #list_items
         queryset = paginator.page(paginator.num_pages)
     context ={
         "object_list": queryset,
-        "title":"List"
+        "title":"List",
+        "page_request_var": page_request_var,
     }
     return render(request, "post_list.html", context)
 
 
-
-
-
-
 def post_update(request,id =None):
     instance = get_object_or_404(Post, id=id)
-    form = PostForms(request.POST or None, instance=instance)
+    form = PostForms(request.POST or None,request.FILES or None ,instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
