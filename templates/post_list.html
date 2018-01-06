@@ -8,7 +8,7 @@
     <div class="col-sm-12">
     <div class="thumbnail">
         {% if obj.image %}
-       <img src="{{ obj.image.url }}" class="imag-responsive" />
+       <img src="{{ obj.image.url }}" class="img-responsive" />
         {% endif %}
         <div class="caption">
             <h3><a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a><small>{{ obj.timestamp|timesince }} ago</small></h3>

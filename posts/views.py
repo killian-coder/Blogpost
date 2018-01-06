@@ -55,7 +55,7 @@ def post_list(request): #list_items
         "title":"List",
         "page_request_var": page_request_var,
     }
-    return render(request, "post_list.html", context)
+    return render(request, "index.html", context)
 
 
 def post_update(request,id =None):
